@@ -1,2 +1,2 @@
 # Fry-Guys-Simulator
-A repositoryto sync my unity project
+A repository to sync my unity project
