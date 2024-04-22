@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class InteractableBase : MonoBehaviour
 {
-    public bool destroy=false,playSound=false,doesequip,IsFlashlight;
+    public bool destroy=false,playSound=false,doesequip,IsFlashlight,IsLever;
 }

@@ -6,16 +6,33 @@ using UnityEngine.UI;
 public class PlayerFramework : MonoBehaviour
 {
     public GameObject Cursor,ObjectText;
-    GameObject Cam,FlashL,NoRot;
+    GameObject Cam,FlashL,NoRot,Nokia,Canvas;
+    public AudioClip[] Call1;
+    AudioSource NokiaSpeaker;
     RaycastHit hit;
-    bool CursorOut = false,mDown=false,HasFlashlight=false;
+    bool CursorOut = false,mDown=false,HasFlashlight=false,NokiaOut=false,GettingCall=false,InCall=false;
+    public int Night = 1;
     public LayerMask RayLayer;
+    public Material NokiaNormal, NokiaInCall;
 
     void Awake()
     {
         Cam = transform.GetChild(0).Find("Player Camera").gameObject;
         NoRot = transform.Find("NoRot").gameObject;
         FlashL = NoRot.transform.Find("FlashL").gameObject;
+        Nokia = NoRot.transform.Find("nokia").gameObject;
+        Canvas = GameObject.Find("Canvas");
+        NokiaSpeaker = Nokia.GetComponent<AudioSource>();
+        Nokia.SetActive(false);
+    }
+
+    IEnumerator FirstPhoneCall()
+    {
+        yield return new WaitForSeconds(8);
+        Nokia.transform.Find("Main").GetComponent<MeshRenderer>().material = NokiaInCall;
+        Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Play();
+        Canvas.transform.Find("PhoneText").GetComponent<Text>().enabled = true;
+        GettingCall = true;
     }
 
     IEnumerator Debris(float Time,GameObject _object)
@@ -36,8 +53,36 @@ public class PlayerFramework : MonoBehaviour
         Destroy(Atext.gameObject);
     }
 
+    IEnumerator PhoneReset()
+    {
+        while (NokiaSpeaker.isPlaying) { yield return null; }
+        Nokia.transform.Find("Main").GetComponent<MeshRenderer>().material = NokiaNormal;
+        Nokia.GetComponent<Animation>().Play("ResetPhone");
+        InCall = false;
+        Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
+    }
+
      void Mouse(bool UpOrDown)
     {
+        if(UpOrDown)
+        {
+            if(GettingCall && NokiaOut)
+            {
+                if(Night == 1)
+                {
+                    Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
+                    Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Stop();
+                    Nokia.GetComponent<Animation>().Play("AnswerCallAnim");
+                    GettingCall = false;
+                    InCall = true;
+                    Canvas.transform.Find("PhoneText").GetComponent<Text>().enabled = false;
+                    NokiaSpeaker.clip = Call1[0];
+                    NokiaSpeaker.Play();
+                    StartCoroutine(PhoneReset());
+                }
+            }
+        }
+
         if (!UpOrDown)
         {
             if (hit.transform.tag == "Interactable" && hit.transform.GetComponent<InteractableBase>()&&CursorOut)
@@ -55,6 +100,19 @@ public class PlayerFramework : MonoBehaviour
                 {
                     HasFlashlight = true;
                     Destroy(GameObject.Find("StartBarrier"));
+                    StartCoroutine(FirstPhoneCall());
+                }
+                if (iBase.IsLever)
+                {
+                    GameObject MainDoor = iBase.transform.parent.parent.gameObject;
+                    if(MainDoor.GetComponent<SecurityDoor>().Closed)
+                    {
+                        MainDoor.GetComponent<SecurityDoor>().OpenDoor();
+
+                    }else
+                    {
+                        MainDoor.GetComponent<SecurityDoor>().CloseDoor();
+                    }
                 }
                 if(iBase.doesequip)
                 {
@@ -95,6 +153,18 @@ public class PlayerFramework : MonoBehaviour
     {
         NoRot.transform.rotation = Quaternion.identity;
         FlashL.transform.rotation = Quaternion.Lerp(FlashL.transform.rotation, Cam.transform.rotation,8f*Time.deltaTime);
+        Nokia.transform.rotation = Quaternion.Lerp(Nokia.transform.rotation, transform.rotation, 10f * Time.deltaTime);
+        if(Input.GetKeyDown("x"))
+        {
+            if(NokiaOut)
+            { if (!InCall)  {
+                    Cam.transform.Find("PhoneEquip").GetComponent<AudioSource>().Play();
+                    NokiaOut = false;
+                    Nokia.SetActive(false); }
+            } else { NokiaOut = true; Nokia.SetActive(true); Cam.transform.Find("PhoneEquip").GetComponent<AudioSource>().Play(); }
+        }
+
+
         if (Input.GetKeyDown("f") && HasFlashlight)
         {
             if (FlashL.GetComponent<Light>().enabled)

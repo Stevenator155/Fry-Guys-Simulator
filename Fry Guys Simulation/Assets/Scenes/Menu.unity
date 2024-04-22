@@ -19703,9 +19703,9 @@ MonoBehaviour:
   H: {fileID: 3007109482628938426}
   H1: {fileID: 8193168355041179690}
   H2: {fileID: 1545234294386013936}
-  A: {fileID: 2614981000812788298}
-  A1: {fileID: 944732597429883244}
-  A2: {fileID: 8251610012363577812}
+  A: {fileID: 2614981000812788302}
+  A1: {fileID: 944732597429883243}
+  A2: {fileID: 8251610012363577816}
 --- !u!1 &1746539838
 GameObject:
   m_ObjectHideFlags: 0
@@ -26719,15 +26719,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 944732597429883245}
-  - component: {fileID: 944732597429883244}
+  - component: {fileID: 944732597429883243}
   m_Layer: 0
-  m_Name: Lukeamatronic
+  m_Name: LukeamatronicE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &944732597429883244
+--- !u!95 &944732597429883243
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -26737,7 +26737,7 @@ Animator:
   m_GameObject: {fileID: 944732597429883242}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d059c1810ea5e2f4f908848a30ab9df3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3508e7f3afd592d4fb79c43f7669a68d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -28707,25 +28707,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &2614981000812788298
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2614981000812788301}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 29a3aa5c177c9bb4e9b6dcb7752d6f59, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &2614981000812788299
 Transform:
   m_ObjectHideFlags: 0
@@ -28751,14 +28732,33 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2614981000812788299}
-  - component: {fileID: 2614981000812788298}
+  - component: {fileID: 2614981000812788302}
   m_Layer: 0
-  m_Name: Allenmatronic
+  m_Name: AllenmatronicE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &2614981000812788302
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614981000812788301}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: adec5fac657c40047891fe0722eecd63, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2614981000852957108
 GameObject:
   m_ObjectHideFlags: 0
@@ -33331,25 +33331,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!95 &8251610012363577812
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251610012363577815}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8179d4dd2632a25419746a68c7964fee, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8251610012363577815
 GameObject:
   m_ObjectHideFlags: 0
@@ -33359,14 +33340,33 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8775346589654614893}
-  - component: {fileID: 8251610012363577812}
+  - component: {fileID: 8251610012363577816}
   m_Layer: 0
-  m_Name: Jonahmatronic
+  m_Name: JonahmatronicE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &8251610012363577816
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251610012363577815}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: af27f28583b32904ba10076fbc299fcf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8430651183225503059
 GameObject:
   m_ObjectHideFlags: 0
