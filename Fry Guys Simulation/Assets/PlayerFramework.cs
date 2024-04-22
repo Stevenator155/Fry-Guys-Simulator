@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class PlayerFramework : MonoBehaviour
 {
     public GameObject Cursor,ObjectText;
-    GameObject Cam,FlashL,NoRot,Nokia,Canvas;
+    GameObject Cam,FlashL,NoRot,Nokia,Canvas,OfficeTracker;
+    Transform Objectives;
     public AudioClip[] Call1;
     AudioSource NokiaSpeaker;
     RaycastHit hit;
@@ -17,6 +18,7 @@ public class PlayerFramework : MonoBehaviour
 
     void Awake()
     {
+        OfficeTracker = GameObject.Find("OfficeMarker"); OfficeTracker.SetActive(false);
         Cam = transform.GetChild(0).Find("Player Camera").gameObject;
         NoRot = transform.Find("NoRot").gameObject;
         FlashL = NoRot.transform.Find("FlashL").gameObject;
@@ -24,6 +26,7 @@ public class PlayerFramework : MonoBehaviour
         Canvas = GameObject.Find("Canvas");
         NokiaSpeaker = Nokia.GetComponent<AudioSource>();
         Nokia.SetActive(false);
+        Objectives = Canvas.transform.Find("Objectives");
     }
 
     IEnumerator FirstPhoneCall()
@@ -53,13 +56,17 @@ public class PlayerFramework : MonoBehaviour
         Destroy(Atext.gameObject);
     }
 
-    IEnumerator PhoneReset()
+    IEnumerator PhoneReset(int Event)
     {
         while (NokiaSpeaker.isPlaying) { yield return null; }
         Nokia.transform.Find("Main").GetComponent<MeshRenderer>().material = NokiaNormal;
         Nokia.GetComponent<Animation>().Play("ResetPhone");
         InCall = false;
         Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
+        if(Event==1)
+        {
+            Objectives.Find("GTO").GetComponent<Text>().enabled = true;
+        }
     }
 
      void Mouse(bool UpOrDown)
@@ -78,7 +85,7 @@ public class PlayerFramework : MonoBehaviour
                     Canvas.transform.Find("PhoneText").GetComponent<Text>().enabled = false;
                     NokiaSpeaker.clip = Call1[0];
                     NokiaSpeaker.Play();
-                    StartCoroutine(PhoneReset());
+                    StartCoroutine(PhoneReset(1));
                 }
             }
         }
@@ -151,6 +158,7 @@ public class PlayerFramework : MonoBehaviour
 
     void Update()
     {
+        OfficeTracker.transform.LookAt(Cam.transform.position);
         NoRot.transform.rotation = Quaternion.identity;
         FlashL.transform.rotation = Quaternion.Lerp(FlashL.transform.rotation, Cam.transform.rotation,8f*Time.deltaTime);
         Nokia.transform.rotation = Quaternion.Lerp(Nokia.transform.rotation, transform.rotation, 10f * Time.deltaTime);
