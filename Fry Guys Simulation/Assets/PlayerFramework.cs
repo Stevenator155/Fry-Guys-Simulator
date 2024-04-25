@@ -15,6 +15,7 @@ public class PlayerFramework : MonoBehaviour
     public int Night = 1;
     public LayerMask RayLayer;
     public Material NokiaNormal, NokiaInCall;
+    public int CurrentEvent = 0;
 
     void Awake()
     {
@@ -49,6 +50,7 @@ public class PlayerFramework : MonoBehaviour
         GameObject Atext = Instantiate(ObjectText);
         Atext.transform.parent = GameObject.Find("Canvas").transform;
         Atext.transform.position = ObjectText.transform.position;
+        Atext.transform.localScale = ObjectText.transform.localScale;
         Atext.GetComponent<Animation>().Play("ObjectTextAnim");
         Atext.GetComponent<Text>().text = "Equiped " + name;
         Atext.SetActive(true);
@@ -65,17 +67,36 @@ public class PlayerFramework : MonoBehaviour
         Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
         if(Event==1)
         {
+            CurrentEvent = 1;
             Objectives.Find("GTO").GetComponent<Text>().enabled = true;
+            OfficeTracker.SetActive(true);
         }
     }
 
-     void Mouse(bool UpOrDown)
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Trigger")
+        {
+            if(other.name == "OfficeTrigger")
+            {
+                if (CurrentEvent == 1)    {
+                    Objectives.Find("GTO").GetComponent<Text>().enabled = false;
+                    OfficeTracker.SetActive(false);
+                    Nokia.transform.Find("Main").GetComponent<MeshRenderer>().material = NokiaInCall;
+                    Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Play();
+                    GettingCall = true;
+                }
+            }
+        }
+    }
+
+    void Mouse(bool UpOrDown)
     {
         if(UpOrDown)
         {
             if(GettingCall && NokiaOut)
             {
-                if(Night == 1)
+                if(Night == 1&&CurrentEvent==0)
                 {
                     Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
                     Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Stop();
@@ -86,6 +107,18 @@ public class PlayerFramework : MonoBehaviour
                     NokiaSpeaker.clip = Call1[0];
                     NokiaSpeaker.Play();
                     StartCoroutine(PhoneReset(1));
+                }
+                if (Night == 1 && CurrentEvent == 1)
+                {
+                    Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
+                    Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Stop();
+                    Nokia.GetComponent<Animation>().Play("AnswerCallAnim");
+                    GettingCall = false;
+                    InCall = true;
+                    Canvas.transform.Find("PhoneText").GetComponent<Text>().enabled = false;
+                    NokiaSpeaker.clip = Call1[1];
+                    NokiaSpeaker.Play();
+                    StartCoroutine(PhoneReset(2));
                 }
             }
         }
