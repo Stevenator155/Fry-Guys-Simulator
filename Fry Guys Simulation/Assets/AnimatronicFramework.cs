@@ -7,6 +7,7 @@ public class AnimatronicFramework : MonoBehaviour
     NavMeshAgent Agent;
     GameObject Character;
     GameObject[] Points;
+    public int State = 1;
     private const float rotSpeed = 20f;
 
     void Start()
@@ -18,7 +19,7 @@ public class AnimatronicFramework : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Agent.SetDestination(Character.transform.position);
+     //   Agent.SetDestination(Character.transform.position);
 
     }
 }

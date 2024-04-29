@@ -85,6 +85,7 @@ public class PlayerFramework : MonoBehaviour
                     Nokia.transform.Find("Main").GetComponent<MeshRenderer>().material = NokiaInCall;
                     Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Play();
                     GettingCall = true;
+                    CurrentEvent = 2;
                 }
             }
         }
@@ -108,7 +109,7 @@ public class PlayerFramework : MonoBehaviour
                     NokiaSpeaker.Play();
                     StartCoroutine(PhoneReset(1));
                 }
-                if (Night == 1 && CurrentEvent == 1)
+                if (Night == 1 && CurrentEvent == 2)
                 {
                     Nokia.transform.Find("Slider").GetComponent<AudioSource>().Play();
                     Cam.transform.Find("Ringtone").GetComponent<AudioSource>().Stop();
