@@ -5,17 +5,19 @@ using UnityEngine.UI;
 
 public class PlayerFramework : MonoBehaviour
 {
-    public GameObject Cursor,ObjectText;
+    public GameObject CCursor,ObjectText,InCamUI;
     GameObject Cam,FlashL,NoRot,Nokia,Canvas,OfficeTracker;
     Transform Objectives;
     public AudioClip[] Call1;
     AudioSource NokiaSpeaker;
     RaycastHit hit;
+    public bool InCameras = false;
     bool CursorOut = false,mDown=false,HasFlashlight=false,NokiaOut=false,GettingCall=false,InCall=false;
-    public int Night = 1;
+    public int Night = 1,ActiveCam=-1;
     public LayerMask RayLayer;
     public Material NokiaNormal, NokiaInCall;
     public int CurrentEvent = 0;
+    public GameObject[] AvailableCameras;
 
     void Awake()
     {
@@ -91,6 +93,33 @@ public class PlayerFramework : MonoBehaviour
         }
     }
 
+    public void RightArrow()
+    {
+        if(ActiveCam!=AvailableCameras.Length-1)
+        {
+            SwitchCamera(ActiveCam += 1);
+        }
+    }
+    public void LeftArrow()
+    {
+        if (ActiveCam != 0)
+        {
+            SwitchCamera(ActiveCam -= 1);
+        }
+    }
+
+    void SwitchCamera(int NextCam)
+    {
+        if(ActiveCam==-1) { Cam.GetComponent<Camera>().enabled = false; Cam.GetComponent<AudioListener>().enabled = false; Debug.Log("DisCam"); }else
+        {
+            AvailableCameras[ActiveCam].GetComponent<Camera>().enabled = false; AvailableCameras[ActiveCam].GetComponent<AudioListener>().enabled = false;
+        }
+        ActiveCam = NextCam;
+        AvailableCameras[ActiveCam].GetComponent<Camera>().enabled = true; AvailableCameras[ActiveCam].GetComponent<AudioListener>().enabled = true;
+
+    }
+
+
     void Mouse(bool UpOrDown)
     {
         if(UpOrDown)
@@ -143,6 +172,18 @@ public class PlayerFramework : MonoBehaviour
                     Destroy(GameObject.Find("StartBarrier"));
                     StartCoroutine(FirstPhoneCall());
                 }
+                if(iBase.IsCams)
+                {
+                    if(InCameras==false)
+                    {
+                        InCameras = true;
+                        GetComponent<FirstPersonAIO>().enabled = false;
+                        InCamUI.SetActive(true);
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        SwitchCamera(0);   
+                    }
+                }
                 if (iBase.IsLever)
                 {
                     GameObject MainDoor = iBase.transform.parent.parent.gameObject;
@@ -176,7 +217,7 @@ public class PlayerFramework : MonoBehaviour
                 if (!CursorOut)
                 {
                     CursorOut = true;
-                    Cursor.GetComponent<Animation>().Play("HilightObject");
+                    CCursor.GetComponent<Animation>().Play("HilightObject");
                 }
             }
             else
@@ -184,7 +225,7 @@ public class PlayerFramework : MonoBehaviour
                 if (CursorOut)
                 {
                     CursorOut = false;
-                    Cursor.GetComponent<Animation>().Play("UnHilight");
+                    CCursor.GetComponent<Animation>().Play("UnHilight");
                 }
             }
         }
