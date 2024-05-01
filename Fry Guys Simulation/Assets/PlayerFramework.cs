@@ -97,21 +97,40 @@ public class PlayerFramework : MonoBehaviour
     {
         if(ActiveCam!=AvailableCameras.Length-1)
         {
-            SwitchCamera(ActiveCam += 1);
+            SwitchCamera(ActiveCam + 1);
         }
     }
+
+    public void ExitCams()
+    {
+        InCameras = false;
+        GetComponent<FirstPersonAIO>().enabled = true;
+        InCamUI.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Objectives.gameObject.SetActive(true);
+        Cam.transform.Find("AutoCrosshair").gameObject.SetActive(true);
+        CCursor.SetActive(true);
+        AvailableCameras[ActiveCam].GetComponent<Camera>().enabled = false; AvailableCameras[ActiveCam].GetComponent<AudioListener>().enabled = false;
+        ActiveCam = -1;
+        Cam.GetComponent<Camera>().enabled = true; Cam.GetComponent<AudioListener>().enabled = true;
+        Cam.transform.Find("OpenCams").GetComponent<AudioSource>().Play();
+    }
+
+
     public void LeftArrow()
     {
         if (ActiveCam != 0)
         {
-            SwitchCamera(ActiveCam -= 1);
+            SwitchCamera(ActiveCam - 1);
         }
     }
 
     void SwitchCamera(int NextCam)
     {
-        if(ActiveCam==-1) { Cam.GetComponent<Camera>().enabled = false; Cam.GetComponent<AudioListener>().enabled = false; Debug.Log("DisCam"); }else
+        if(ActiveCam==-1) { Cam.GetComponent<Camera>().enabled = false; Cam.GetComponent<AudioListener>().enabled = false;}else
         {
+            Cam.transform.Find("SwitchCams").GetComponent<AudioSource>().Play();
             AvailableCameras[ActiveCam].GetComponent<Camera>().enabled = false; AvailableCameras[ActiveCam].GetComponent<AudioListener>().enabled = false;
         }
         ActiveCam = NextCam;
@@ -181,6 +200,10 @@ public class PlayerFramework : MonoBehaviour
                         InCamUI.SetActive(true);
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
+                        Objectives.gameObject.SetActive(false);
+                        Cam.transform.Find("AutoCrosshair").gameObject.SetActive(false) ;
+                        CCursor.SetActive(false);
+                        Cam.transform.Find("OpenCams").GetComponent<AudioSource>().Play();
                         SwitchCamera(0);   
                     }
                 }
@@ -210,7 +233,7 @@ public class PlayerFramework : MonoBehaviour
 
     void CursorController()
     {
-        if (Physics.Raycast(Cam.transform.position, Cam.transform.forward, out hit, 500, RayLayer))
+        if (Physics.Raycast(Cam.transform.position, Cam.transform.forward, out hit, 500, RayLayer)&&!InCameras)
         {
             if (hit.transform.tag == "Interactable" && (hit.transform.position - Cam.transform.position).magnitude < 2.5f)
             {
@@ -261,13 +284,14 @@ public class PlayerFramework : MonoBehaviour
                 FlashL.GetComponent<AudioSource>().Play();
             }
         }
-
-        if (Input.GetMouseButton(0))
+        if (!InCameras)
         {
-            if (!mDown) { mDown = true; Mouse(true); }
+            if (Input.GetMouseButton(0))
+            {
+                if (!mDown) { mDown = true; Mouse(true); }
+            }
+            else if (mDown) { mDown = false; Mouse(false); }
         }
-        else if (mDown) { mDown = false; Mouse(false); }
-
         CursorController();
     }
 }
