@@ -135,7 +135,7 @@ public class PlayerFramework : MonoBehaviour
         }
         ActiveCam = NextCam;
         AvailableCameras[ActiveCam].GetComponent<Camera>().enabled = true; AvailableCameras[ActiveCam].GetComponent<AudioListener>().enabled = true;
-
+        InCamUI.transform.Find("CamText").GetComponent<Text>().text = AvailableCameras[ActiveCam].transform.parent.name;
     }
 
 
